@@ -26,8 +26,8 @@ When a client sends an HTTP request to the proxy server:
 
 ### Usage
 
-1. `config/routing.yaml` contains mapping of domains to ip's in the backend.
-2. Start backend servers on the ports specified in `config/routing.yaml`. Run both commands in different terminals.
+1. Run `pip install -r requirements.txt` to install the dependencies.
+2. `config/routing.yaml` contains the mapping of domains to ips. Start backend servers on the ports specified in `config/routing.yaml`. Run both commands in different terminals.
     - `python -m http.server 8000`
     - `python -m http.server 9000`
 3. Run the proxy server with `python main.py`.
