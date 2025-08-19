@@ -1,0 +1,16 @@
+[
+  {
+    "id": "51c430b2-6789-4909-af82-32c0c59d8fad",
+    "timestamp": "2025-08-19T15:20:24.344925Z",
+    "client_ip": "127.0.0.1",
+    "host": "customer1.com",
+    "method": "GET",
+    "path": "/",
+    "headers": {
+      "User-Agent": "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.26100.4768",
+      "Host": "customer1.com",
+      "Connection": "Keep-Alive"
+    },
+    "body": ""
+  }
+]

@@ -1,0 +1,4 @@
+customer1.com:
+  backend: "http://127.0.0.1:8000"
+customer2.net:
+  backend: "http://127.0.0.1:9000"
