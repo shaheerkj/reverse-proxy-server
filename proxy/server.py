@@ -1,8 +1,7 @@
 import asyncio
 import logging
 from proxy.router import Router
-from request_logging.normalize import normalize_and_log_request
-from request_logging.normalize import log_request
+from request_logging.normalize import log_request, log_response, parse_response
 
 class ProxyServer:
     def __init__(self, host, port, routing_file):
@@ -18,11 +17,15 @@ class ProxyServer:
                 writer.close()
                 await writer.wait_closed()
                 return
+            
+            # Check if this is a WebSocket upgrade request
+            request_text = request.decode(errors="ignore")
+            is_websocket = "upgrade: websocket" in request_text.lower()
 
-            # Send raw request to normalize_and_log_request and get request_id
+            # Send raw request to log_request and get request_id
             peername = writer.get_extra_info("peername")
             client_ip = peername[0] if peername else None
-            # Patch: get request_id from normalize_and_log_request
+            # Patch: get request_id from log_request
             import uuid
             request_id = str(uuid.uuid4())
             from request_logging.normalize import log_request
@@ -52,7 +55,8 @@ class ProxyServer:
                 "headers": headers,
                 "body": body
             }
-            log_request(request_data)
+            # Run logging in background
+            asyncio.create_task(log_request(request_data))
 
             # Extract Host header
             headers = request.decode(errors="ignore").split("\r\n")
@@ -79,42 +83,121 @@ class ProxyServer:
             backend_host, backend_port = backend
             logging.info(f"Routing {host_header} -> {backend_host}:{backend_port}")
 
-            backend_reader, backend_writer = await asyncio.open_connection(
-                backend_host, backend_port
-            )
-
-            backend_writer.write(request)
-            await backend_writer.drain()
-
-            # Relay response and log it
-            from request_logging.normalize import log_response, parse_response
-            full_response = b""
-            while True:
-                data = await backend_reader.read(65536)
-                if not data:
-                    break
-                writer.write(data)
+            try:
+                # Set a timeout for backend connection
+                backend_reader, backend_writer = await asyncio.wait_for(
+                    asyncio.open_connection(backend_host, backend_port), timeout=10.0
+                )
+            except asyncio.TimeoutError:
+                logging.error(f"Timeout connecting to backend {backend_host}:{backend_port}")
+                writer.write(b"HTTP/1.1 504 Gateway Timeout\r\n\r\nBackend connection timed out")
                 await writer.drain()
-                full_response += data
+                writer.close()
+                await writer.wait_closed()
+                return
+            except Exception as e:
+                logging.error(f"Error connecting to backend {backend_host}:{backend_port}: {e}")
+                writer.write(b"HTTP/1.1 502 Bad Gateway\r\n\r\nBackend connection error")
+                await writer.drain()
+                writer.close()
+                await writer.wait_closed()
+                return
 
-            backend_writer.close()
-            await backend_writer.wait_closed()
-            writer.close()
-            await writer.wait_closed()
+            try:
+                # Remove Host, Referer, and Origin headers, then add Host for backend
+                request_lines = request.decode(errors="ignore").split("\r\n")
+                new_lines = []
+                for line in request_lines:
+                    lower_line = line.lower()
+                    if lower_line.startswith("host:") or lower_line.startswith("referer:") or lower_line.startswith("origin:"):
+                        continue  # Skip these headers
+                    new_lines.append(line)
+                # Add Host header for backend (do not leak proxy info)
+                new_lines.insert(1, f"Host: {backend_host}:{backend_port}")
+                new_request = "\r\n".join(new_lines).encode()
 
-            # Log the response
-            status_line, response_headers, response_body = parse_response(full_response)
-            response_data = {
-                "id": request_id,
-                "timestamp": dt.utcnow().isoformat() + "Z",
-                "status_line": status_line,
-                "headers": response_headers,
-                "body": response_body
-            }
-            log_response(response_data)
+                backend_writer.write(new_request)
+                await backend_writer.drain()
+
+                if is_websocket:
+                    # Handle WebSocket connection
+                    await self._handle_websocket(reader, writer, backend_reader, backend_writer)
+                else:
+                    # Handle normal HTTP connection
+                    first_chunk = True
+                    full_response = b""
+                    while True:
+                        try:
+                            data = await asyncio.wait_for(backend_reader.read(65536), timeout=15.0)
+                        except asyncio.TimeoutError:
+                            logging.error(f"Timeout reading from backend {backend_host}:{backend_port}")
+                            break
+                        except Exception as e:
+                            logging.error(f"Error reading from backend {backend_host}:{backend_port}: {e}")
+                            break
+                        if not data:
+                            break
+                        
+                        # Rewrite URLs in response to use proxy domain
+                        response_data = data.decode('utf-8', errors='ignore')
+                        response_data = response_data.replace(f'http://{backend_host}:{backend_port}', f'http://{host_header}')
+                        response_data = response_data.replace(f'https://{backend_host}:{backend_port}', f'http://{host_header}')
+                        
+                        writer.write(response_data.encode('utf-8'))
+                        await writer.drain()
+                        full_response += data
+                        if first_chunk:
+                            status_line, response_headers, response_body = parse_response(full_response)
+                            response_data = {
+                                "id": request_id,
+                                "timestamp": dt.utcnow().isoformat() + "Z",
+                                "status_line": status_line,
+                                "headers": response_headers,
+                                "body": response_body
+                            }
+                            # Run logging in background
+                            asyncio.create_task(log_response(response_data))
+                            first_chunk = False
+            finally:
+                try:
+                    backend_writer.close()
+                    await backend_writer.wait_closed()
+                except Exception as e:
+                    logging.error(f"Error closing backend connection: {e}")
+                try:
+                    writer.close()
+                    await writer.wait_closed()
+                except Exception as e:
+                    logging.error(f"Error closing client connection: {e}")
 
         except Exception as e:
             logging.error(f"Error in handle_client: {e}")
+
+    async def _handle_websocket(self, client_reader, client_writer, backend_reader, backend_writer):
+        """Handle WebSocket connection by forwarding data in both directions"""
+        async def forward(reader, writer):
+            try:
+                while True:
+                    data = await reader.read(65536)
+                    if not data:
+                        break
+                    writer.write(data)
+                    await writer.drain()
+            except Exception as e:
+                logging.error(f"Error in WebSocket forwarding: {e}")
+
+        # Create tasks for both directions
+        client_to_backend = asyncio.create_task(forward(client_reader, backend_writer))
+        backend_to_client = asyncio.create_task(forward(backend_reader, client_writer))
+
+        # Wait for both directions to complete
+        try:
+            await asyncio.gather(client_to_backend, backend_to_client)
+        except Exception as e:
+            logging.error(f"Error in WebSocket connection: {e}")
+        finally:
+            client_to_backend.cancel()
+            backend_to_client.cancel()
 
     async def start(self):
         server = await asyncio.start_server(self.handle_client, self.host, self.port)

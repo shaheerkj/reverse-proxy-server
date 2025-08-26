@@ -29,9 +29,11 @@ class Router:
             logging.warning(f"No backend found for host: {host}")
             return None
 
-        # Parse URL like http://127.0.0.1:8000
+        # Parse URL like http://127.0.0.1:8000 or http://4.240.92.122:8501/
         try:
             without_scheme = backend_url.replace("http://", "").replace("https://", "")
+            # Remove trailing slash and whitespace
+            without_scheme = without_scheme.strip().rstrip("/")
             backend_host, backend_port = without_scheme.split(":")
             return backend_host, int(backend_port)
         except Exception as e:
