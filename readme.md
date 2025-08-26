@@ -44,6 +44,7 @@ When a client sends an HTTP request to the proxy server:
 	- Routing rules are loaded from `config/routing.yaml`.
 
 2. **Request Handling**
+    - Server extracts the ip and checks if it already exists in the `config/blocklist.json`, if yes, then it closes the connection with **"This IP is banned"**
 	- When a client sends an HTTP request to the proxy, the server reads the request and extracts the `Host` header.
 	- The proxy looks up the backend server for the given host in the routing table.
 	- The request is forwarded to the appropriate backend server.
