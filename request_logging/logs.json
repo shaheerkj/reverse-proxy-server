@@ -1,3 +1,304 @@
 [
-  
+  {
+    "id": "96bdfea0-9616-426e-8d8c-bd4f8f9e1467",
+    "timestamp": "2025-08-26T10:07:22.377299Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/static/js/sprintf.D7DtBTRn.js",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Origin": "http://soc.ai:8080",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054"
+    },
+    "body": ""
+  },
+  {
+    "id": "48fc241d-d9be-41a8-9cb7-957c66277fe3",
+    "timestamp": "2025-08-26T10:07:26.627438Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/static/js/createSuper.DqQ5L3XG.js",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Origin": "http://soc.ai:8080",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054"
+    },
+    "body": ""
+  },
+  {
+    "id": "8b1f2ccb-62f4-4747-ab43-ac6f75a35db4",
+    "timestamp": "2025-08-26T10:07:27.763751Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/static/css/index.CQt5TjGB.css",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Origin": "http://soc.ai:8080",
+      "Accept": "text/css,*/*;q=0.1",
+      "Referer": "http://soc.ai:8080/",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054"
+    },
+    "body": ""
+  },
+  {
+    "id": "21977b9a-8b14-4722-94da-21d40caf090c",
+    "timestamp": "2025-08-26T10:07:27.831510Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/static/js/index.J2D_m7LY.js",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Origin": "http://soc.ai:8080",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054"
+    },
+    "body": ""
+  },
+  {
+    "id": "51982293-4241-430c-994f-ef6b4324ffc4",
+    "timestamp": "2025-08-26T10:07:33.339127Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/static/js/possibleConstructorReturn.DbvQboK3.js",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Origin": "http://soc.ai:8080",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054"
+    },
+    "body": ""
+  },
+  {
+    "id": "b7c30566-f513-4f32-b912-01998409ce0a",
+    "timestamp": "2025-08-26T10:07:33.417403Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/static/js/FileDownload.esm.NPgaLlUE.js",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Origin": "http://soc.ai:8080",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054"
+    },
+    "body": ""
+  },
+  {
+    "id": "db298486-d851-4969-8bf6-9aeb5f47f176",
+    "timestamp": "2025-08-26T10:07:33.543392Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/static/js/index.BPsoiGgP.js",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Origin": "http://soc.ai:8080",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054"
+    },
+    "body": ""
+  },
+  {
+    "id": "be0c8ee0-b0cc-4e41-8d80-982cb768f56e",
+    "timestamp": "2025-08-26T10:07:38.999299Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/media/bc791919e7c46cebcdfe13c73156ce71d88c52d5d1aa1c758e9e3c93.txt",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Accept": "*/*",
+      "Referer": "http://soc.ai:8080/",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054"
+    },
+    "body": ""
+  },
+  {
+    "id": "847114e5-b1a2-4259-a0ef-b695c874227b",
+    "timestamp": "2025-08-26T10:07:39.045636Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/media/e6c378e5465505297dc410b0fad5a24b01e6fb1c0cbefdec96d2c1ae",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Accept": "*/*",
+      "Referer": "http://soc.ai:8080/",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054"
+    },
+    "body": ""
+  },
+  {
+    "id": "079577e8-5b6d-4684-b370-c31c41bc2fb9",
+    "timestamp": "2025-08-26T10:08:33.496908Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "Upgrade-Insecure-Requests": "1",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Sec-Purpose": "prefetch;prerender",
+      "Purpose": "prefetch",
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054",
+      "If-None-Match": "\"48320179162b96e68798a000dd191898cc288d0bb901146f6ae0cd2a66fe39a77f30e691c38bbb147d080fb1570ad752ad722dba65ac89a700c04db595a22c6f\"",
+      "If-Modified-Since": "Fri, 08 Aug 2025 07:26:18 GMT"
+    },
+    "body": ""
+  },
+  {
+    "id": "06928150-9e23-4fbe-b3ff-db27b9e9a9b3",
+    "timestamp": "2025-08-26T10:08:36.016221Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/_stcore/host-config",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Accept": "application/json, text/plain, */*",
+      "Sec-Purpose": "prefetch;prerender",
+      "Purpose": "prefetch",
+      "Referer": "http://soc.ai:8080/",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054",
+      "If-None-Match": "\"81616a560ee347cd184d83d952bb0c953047c949\""
+    },
+    "body": ""
+  },
+  {
+    "id": "af67350d-225a-4e5a-8f50-c5170ba35205",
+    "timestamp": "2025-08-26T10:08:44.486319Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "Upgrade-Insecure-Requests": "1",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054",
+      "If-None-Match": "\"48320179162b96e68798a000dd191898cc288d0bb901146f6ae0cd2a66fe39a77f30e691c38bbb147d080fb1570ad752ad722dba65ac89a700c04db595a22c6f\"",
+      "If-Modified-Since": "Fri, 08 Aug 2025 07:26:18 GMT"
+    },
+    "body": ""
+  },
+  {
+    "id": "cbce323d-ef8f-44cb-b2e3-e5b2dc8da91a",
+    "timestamp": "2025-08-26T10:08:46.129444Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/_stcore/host-config",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Accept": "application/json, text/plain, */*",
+      "Referer": "http://soc.ai:8080/",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054",
+      "If-None-Match": "\"81616a560ee347cd184d83d952bb0c953047c949\""
+    },
+    "body": ""
+  },
+  {
+    "id": "a002d743-637c-4705-b396-8d717e9b3186",
+    "timestamp": "2025-08-26T10:08:51.389058Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/_stcore/health",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "keep-alive",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Accept": "application/json, text/plain, */*",
+      "Referer": "http://soc.ai:8080/",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|53557d38|2aaefc51985ad09f8d8544321246bfd1|1756188054"
+    },
+    "body": ""
+  },
+  {
+    "id": "34078f24-d2e4-4dcc-a15f-9c88b8250334",
+    "timestamp": "2025-08-26T10:08:51.704296Z",
+    "client_ip": "127.0.0.1",
+    "host": "soc.ai:8080",
+    "method": "GET",
+    "path": "/_stcore/stream",
+    "headers": {
+      "Host": "soc.ai:8080",
+      "Connection": "Upgrade",
+      "Pragma": "no-cache",
+      "Cache-Control": "no-cache",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+      "Upgrade": "websocket",
+      "Origin": "http://soc.ai:8080",
+      "Sec-WebSocket-Version": "13",
+      "Accept-Encoding": "gzip, deflate",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cookie": "ajs_anonymous_id=813bb62b-fa90-4a1d-b78a-9922d4314611; _streamlit_xsrf=2|cd60c77c|b49b4615066f6adb13b0fe768c730595|1756188054",
+      "Sec-WebSocket-Key": "5g/ujrYclgRPnnVHXB9v9A==",
+      "Sec-WebSocket-Extensions": "permessage-deflate; client_max_window_bits",
+      "Sec-WebSocket-Protocol": "streamlit, 2|cd60c77c|b49b4615066f6adb13b0fe768c730595|1756188054"
+    },
+    "body": ""
+  }
 ]

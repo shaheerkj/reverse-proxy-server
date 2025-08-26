@@ -1,5 +1,9 @@
-import asyncio
-import logging
+import asyncio, logging
+from typing import Tuple
+from dataclasses import dataclass
+from http import HTTPStatus
+from datetime import datetime
+import uuid
 from proxy.router import Router
 from request_logging.normalize import log_request, log_response, parse_response
 
@@ -8,11 +12,12 @@ class ProxyServer:
         self.host = host
         self.port = port
         self.router = Router(routing_file)
+        
 
     async def handle_client(self, reader, writer):
         try:
-            # Read incoming request
-            request = await reader.read(65536)
+            # Read initial request with smaller buffer
+            request = await reader.read(8192)  # 8KB buffer is usually sufficient for headers
             if not request:
                 writer.close()
                 await writer.wait_closed()
@@ -22,18 +27,18 @@ class ProxyServer:
             request_text = request.decode(errors="ignore")
             is_websocket = "upgrade: websocket" in request_text.lower()
 
-            # Send raw request to log_request and get request_id
+            # Parse request once for all uses
             peername = writer.get_extra_info("peername")
             client_ip = peername[0] if peername else None
-            # Patch: get request_id from log_request
-            import uuid
             request_id = str(uuid.uuid4())
-            from request_logging.normalize import log_request
-            request_text = request.decode(errors="ignore")
+            
+            # Parse request headers and body
             lines = request_text.split("\r\n")
             request_line = lines[0].split()
             method = request_line[0] if len(request_line) > 0 else ""
             path = request_line[1] if len(request_line) > 1 else ""
+            
+            # Parse headers
             headers = {}
             i = 1
             while i < len(lines) and lines[i]:
@@ -41,15 +46,16 @@ class ProxyServer:
                     k, v = lines[i].split(":", 1)
                     headers[k.strip()] = v.strip()
                 i += 1
+            
+            # Get body
             body = "\r\n".join(lines[i+1:]) if i+1 < len(lines) else ""
-            host = headers.get("Host", "")
             from datetime import datetime as dt
             timestamp = dt.utcnow().isoformat() + "Z"
             request_data = {
                 "id": request_id,
                 "timestamp": timestamp,
                 "client_ip": client_ip,
-                "host": host,
+                "host": headers.get("Host", ""),
                 "method": method,
                 "path": path,
                 "headers": headers,
@@ -58,13 +64,8 @@ class ProxyServer:
             # Run logging in background
             asyncio.create_task(log_request(request_data))
 
-            # Extract Host header
-            headers = request.decode(errors="ignore").split("\r\n")
-            host_header = None
-            for h in headers:
-                if h.lower().startswith("host:"):
-                    host_header = h.split(":", 1)[1].strip()
-                    break
+            # Use the already parsed headers to get host
+            host_header = headers.get("Host", "")
 
             if not host_header:
                 logging.warning("No Host header found in request")
@@ -86,7 +87,8 @@ class ProxyServer:
             try:
                 # Set a timeout for backend connection
                 backend_reader, backend_writer = await asyncio.wait_for(
-                    asyncio.open_connection(backend_host, backend_port), timeout=10.0
+                    asyncio.open_connection(backend_host, backend_port),
+                    timeout=10.0
                 )
             except asyncio.TimeoutError:
                 logging.error(f"Timeout connecting to backend {backend_host}:{backend_port}")
@@ -125,39 +127,42 @@ class ProxyServer:
                 else:
                     # Handle normal HTTP connection
                     first_chunk = True
-                    full_response = b""
+                    header_buffer = bytearray()
+                    
                     while True:
                         try:
-                            data = await asyncio.wait_for(backend_reader.read(65536), timeout=15.0)
+                            chunk = await asyncio.wait_for(backend_reader.read(8192), timeout=5.0)
+                            if not chunk:  # EOF
+                                break
+                            
+                            if first_chunk:
+                                # Only parse headers from the first chunk
+                                header_buffer.extend(chunk)
+                                if b'\r\n\r\n' in header_buffer:
+                                    # Headers complete
+                                    headers_part = header_buffer[:header_buffer.find(b'\r\n\r\n') + 4]
+                                    status_line, response_headers, _ = parse_response(headers_part)
+                                    
+                                    # Log response headers
+                                    response_data = {
+                                        "id": request_id,
+                                        "timestamp": dt.utcnow().isoformat() + "Z",
+                                        "status_line": status_line,
+                                        "headers": response_headers
+                                    }
+                                    asyncio.create_task(log_response(response_data))
+                                    first_chunk = False
+                            
+                            # Write chunk directly to client
+                            writer.write(chunk)
+                            await writer.drain()
+                            
                         except asyncio.TimeoutError:
                             logging.error(f"Timeout reading from backend {backend_host}:{backend_port}")
                             break
                         except Exception as e:
                             logging.error(f"Error reading from backend {backend_host}:{backend_port}: {e}")
                             break
-                        if not data:
-                            break
-                        
-                        # Rewrite URLs in response to use proxy domain
-                        response_data = data.decode('utf-8', errors='ignore')
-                        response_data = response_data.replace(f'http://{backend_host}:{backend_port}', f'http://{host_header}')
-                        response_data = response_data.replace(f'https://{backend_host}:{backend_port}', f'http://{host_header}')
-                        
-                        writer.write(response_data.encode('utf-8'))
-                        await writer.drain()
-                        full_response += data
-                        if first_chunk:
-                            status_line, response_headers, response_body = parse_response(full_response)
-                            response_data = {
-                                "id": request_id,
-                                "timestamp": dt.utcnow().isoformat() + "Z",
-                                "status_line": status_line,
-                                "headers": response_headers,
-                                "body": response_body
-                            }
-                            # Run logging in background
-                            asyncio.create_task(log_response(response_data))
-                            first_chunk = False
             finally:
                 try:
                     backend_writer.close()
@@ -178,8 +183,8 @@ class ProxyServer:
         async def forward(reader, writer):
             try:
                 while True:
-                    data = await reader.read(65536)
-                    if not data:
+                    data = await reader.read(8192)  # 8KB chunks for websocket data
+                    if not data:  # EOF
                         break
                     writer.write(data)
                     await writer.drain()
@@ -200,7 +205,12 @@ class ProxyServer:
             backend_to_client.cancel()
 
     async def start(self):
-        server = await asyncio.start_server(self.handle_client, self.host, self.port)
+        server = await asyncio.start_server(
+            self.handle_client,
+            self.host,
+            self.port
+        )
         logging.info(f"Proxy server listening on {self.host}:{self.port}")
+        
         async with server:
             await server.serve_forever()
