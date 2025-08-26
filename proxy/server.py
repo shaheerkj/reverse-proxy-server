@@ -6,12 +6,14 @@ from datetime import datetime
 import uuid
 from proxy.router import Router
 from request_logging.normalize import log_request, log_response, parse_response
+from proxy.blocklist import BlocklistManager
 
 class ProxyServer:
     def __init__(self, host, port, routing_file):
         self.host = host
         self.port = port
         self.router = Router(routing_file)
+        self.blocklist = BlocklistManager("config/blocklist.json")
         
 
     async def handle_client(self, reader, writer):
@@ -27,9 +29,18 @@ class ProxyServer:
             request_text = request.decode(errors="ignore")
             is_websocket = "upgrade: websocket" in request_text.lower()
 
-            # Parse request once for all uses
+            # Get and check client IP
             peername = writer.get_extra_info("peername")
             client_ip = peername[0] if peername else None
+            
+            # Check if IP is blocked
+            if client_ip and await self.blocklist.is_blocked(client_ip):
+                logging.warning(f"Blocked request from banned IP: {client_ip}")
+                writer.write(b"HTTP/1.1 403 Forbidden\r\n\r\nYour IP is blocked")
+                await writer.drain()
+                writer.close()
+                await writer.wait_closed()
+                return
             request_id = str(uuid.uuid4())
             
             # Parse request headers and body
@@ -205,6 +216,9 @@ class ProxyServer:
             backend_to_client.cancel()
 
     async def start(self):
+        # Start the blocklist manager
+        await self.blocklist.start()
+        
         server = await asyncio.start_server(
             self.handle_client,
             self.host,
@@ -212,5 +226,8 @@ class ProxyServer:
         )
         logging.info(f"Proxy server listening on {self.host}:{self.port}")
         
-        async with server:
-            await server.serve_forever()
+        try:
+            async with server:
+                await server.serve_forever()
+        finally:
+            await self.blocklist.stop()
